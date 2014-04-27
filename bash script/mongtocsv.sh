@@ -1,5 +1,10 @@
 #!/bin/bash
-mongo --quiet MongoToCsvScript4 --eval 'printjson(db.user_details3.find().toArray())' > output.json
+
+db='MongoToCsvScript5'
+collection='user_details'
+output_file='final.csv'
+
+mongo --quiet ${db} --eval 'printjson(db.'${collection}'.find().toArray())' > output.json
 cut -d ':' -f2 output.json >new_output.json 
 cut -d ':' -f1 output.json >new_output_header.json 
 cat new_output.json | tr -d " \t\n\r" > output.json
@@ -16,5 +21,5 @@ cat header2.json | tr -d '"' > header.json
 vari4=$(<header.json)
 echo ${vari4:4}>header.json
 cat header.json | tr -d '}' > header2.json
-cat header2.json output.json > final.csv
+cat header2.json output.json > ${output_file}
 rm new_output_header.json header.json header2.json new_output.json output.json
